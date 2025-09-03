@@ -66,28 +66,56 @@ export const getUser = async (req, res)=> {
 }
 
 
-export const getPublishedImage = async (req, res) =>{
-    try {
-        const publishedImageMessages = await Chat.aggregate([
-            {$unwind: "$message"},
-            {
-                $match: {
-                    "messages.iSImage": true,
-                    "messages.isPublished": true
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    imageUrl: "$messages.content",
-                    userName: "$userName"
-                }
-            }
+// export const getPublishedImage = async (req, res) =>{
+//     try {
+//         const publishedImageMessages = await Chat.aggregate([
+//             {$unwind: "$messages"},
+//             {
+//                 $match: {
+//                     "messages.isImage": true,
+//                     "messages.isPublished": true
+//                 }
+//             },
+//             {
+//                 $project: {
+//                     _id: 0,
+//                     imageUrl: "$messages.content",
+//                     userName: "$userName"
+//                 }
+//             }
 
-        ])
-        res.jsoon({success: true, images:publishedImageMessages.reverse()})
-    } catch (error) {
-        return res.json({success: false, message: error.message });
+//         ])
+//         res.json({success: true, images:publishedImageMessages.reverse()})
+//     } catch (error) {
+//         return res.json({success: false, message: error.message });
         
-    }
-}
+//     }
+// }
+
+export const getPublishedImage = async (req, res) => {
+  try {
+    const publishedImageMessages = await Chat.aggregate([
+      { $unwind: "$messages" }, // ✅ correct field name
+      {
+        $match: {
+          "messages.isImage": true,      // ✅ correct key
+          "messages.isPublished": true   // ✅ correct key
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          imageUrl: "$messages.content", // ✅ this is where the image URL is stored
+          userName: "$userName"
+        }
+      }
+    ]);
+
+    res.json({
+      success: true,
+      images: publishedImageMessages.reverse()
+    });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
