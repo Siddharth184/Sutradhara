@@ -72,9 +72,6 @@ http://localhost:5173
 ```
 
 
- # Mobile app support
-
-
 ## 📝 License
 
 This project is licensed under the MIT License.
