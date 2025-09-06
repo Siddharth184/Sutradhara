@@ -374,7 +374,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         <div className="flex flex-col text-sm">
           <p className="font-medium">Credits: {user?.credits ?? 0}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Purchase credits to use QuickGPT
+            Purchase credits
           </p>
         </div>
       </div>
